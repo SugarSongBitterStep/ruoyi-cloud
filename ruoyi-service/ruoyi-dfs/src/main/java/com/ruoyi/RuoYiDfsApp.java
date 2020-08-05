@@ -9,10 +9,8 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
 @EnableDiscoveryClient
 @EnableFeignClients(basePackages = "com.ruoyi")
-public class RuoYiDfsApp
-{
-    public static void main(String[] args)
-    {
+public class RuoYiDfsApp {
+    public static void main(String[] args) {
         SpringApplication.run(RuoYiDfsApp.class, args);
     }
 }

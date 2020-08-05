@@ -7,7 +7,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 
 public class GenericResponseWrapper extends HttpServletResponseWrapper {
-    private ByteArrayOutputStream output;
+    private final ByteArrayOutputStream output;
     private int contentLength;
     private String contentType;
 

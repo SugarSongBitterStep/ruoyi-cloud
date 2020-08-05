@@ -1,4 +1,4 @@
-spring: 
+spring:
   redis:
     database: 1
     host: 192.168.2.85

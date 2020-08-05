@@ -1,17 +1,15 @@
 package com.ruoyi.system.oss;
 
-public class CloudConstant
-{
+public class CloudConstant {
     /**
      * 云存储配置KEY
      */
     public final static String CLOUD_STORAGE_CONFIG_KEY = "sys.oss.cloudStorage";
 
     /**
-       * 云服务商
-       */
-    public enum CloudService
-    {
+     * 云服务商
+     */
+    public enum CloudService {
         /**
          * 七牛云
          */
@@ -24,15 +22,13 @@ public class CloudConstant
          * 腾讯云
          */
         QCLOUD(3);
-        private int value;
+        private final int value;
 
-        CloudService(int value)
-        {
+        CloudService(int value) {
             this.value = value;
         }
 
-        public int getValue()
-        {
+        public int getValue() {
             return value;
         }
     }

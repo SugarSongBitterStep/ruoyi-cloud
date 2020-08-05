@@ -1,7 +1,13 @@
 package com.ruoyi.activiti.controller;
 
-import java.io.UnsupportedEncodingException;
-
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.github.pagehelper.PageHelper;
+import com.ruoyi.activiti.domain.ActReModel;
+import com.ruoyi.activiti.service.IActReModelService;
+import com.ruoyi.common.core.controller.BaseController;
+import com.ruoyi.common.core.domain.R;
 import org.activiti.bpmn.converter.BpmnXMLConverter;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.editor.constants.ModelDataJsonConstants;
@@ -11,33 +17,22 @@ import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.github.pagehelper.PageHelper;
-import com.ruoyi.activiti.domain.ActReModel;
-import com.ruoyi.activiti.service.IActReModelService;
-import com.ruoyi.common.core.controller.BaseController;
-import com.ruoyi.common.core.domain.R;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * 模型管理
  */
 @Controller
 @RequestMapping("models")
-public class ModelerController extends BaseController
-{
+public class ModelerController extends BaseController {
     @Autowired
-    RepositoryService          repositoryService;
+    RepositoryService repositoryService;
 
     @Autowired
-    ObjectMapper               objectMapper;
+    ObjectMapper objectMapper;
 
 
     @Autowired
@@ -45,12 +40,12 @@ public class ModelerController extends BaseController
 
     /**
      * 新建一个空模型
+     *
      * @return
      * @throws UnsupportedEncodingException
      */
     @GetMapping("newModel")
-    public Object newModel() throws UnsupportedEncodingException
-    {
+    public Object newModel() throws UnsupportedEncodingException {
         // 初始化一个空模型
         Model model = repositoryService.newModel();
         // 设置一些默认信息
@@ -74,38 +69,36 @@ public class ModelerController extends BaseController
         ObjectNode stencilSetNode = objectMapper.createObjectNode();
         stencilSetNode.put("namespace", "http://b3mn.org/stencilset/bpmn2.0#");
         editorNode.replace("stencilset", stencilSetNode);
-        repositoryService.addModelEditorSource(id, editorNode.toString().getBytes("utf-8"));
+        repositoryService.addModelEditorSource(id, editorNode.toString().getBytes(StandardCharsets.UTF_8));
         return "redirect:/modeler.html?modelId=" + id;
     }
 
     /**
      * 发布模型为流程定义
+     *
      * @param id
      * @return
      * @throws Exception
      */
     @PostMapping("deploy/{id}")
     @ResponseBody
-    public R deploy(@PathVariable("id") String id) throws Exception
-    {
+    public R deploy(@PathVariable("id") String id) throws Exception {
         // 获取模型
         Model modelData = repositoryService.getModel(id);
         byte[] bytes = repositoryService.getModelEditorSource(modelData.getId());
-        if (bytes == null)
-        {
+        if (bytes == null) {
             return R.error("模型数据为空，请先设计流程并成功保存，再进行发布。");
         }
         JsonNode modelNode = new ObjectMapper().readTree(bytes);
         BpmnModel model = new BpmnJsonConverter().convertToBpmnModel(modelNode);
-        if (model.getProcesses().size() == 0)
-        {
+        if (model.getProcesses().size() == 0) {
             return R.error("数据模型不符要求，请至少设计一条主线流程。");
         }
         byte[] bpmnBytes = new BpmnXMLConverter().convertToXML(model);
         // 发布流程
         String processName = modelData.getName() + ".bpmn20.xml";
         Deployment deployment = repositoryService.createDeployment().name(modelData.getName())
-                .addString(processName, new String(bpmnBytes, "UTF-8")).deploy();
+                .addString(processName, new String(bpmnBytes, StandardCharsets.UTF_8)).deploy();
         modelData.setDeploymentId(deployment.getId());
         repositoryService.saveModel(modelData);
         return R.ok();
@@ -113,16 +106,14 @@ public class ModelerController extends BaseController
 
 
     @GetMapping("get/{id}")
-    public R get(@PathVariable("id") String id)
-    {
+    public R get(@PathVariable("id") String id) {
         Model model = repositoryService.createModelQuery().modelId(id).singleResult();
         return R.data(model);
     }
 
     @GetMapping("list")
     @ResponseBody
-    public R getList(ActReModel actReModel)
-    {
+    public R getList(ActReModel actReModel) {
         startPage();
         PageHelper.orderBy("create_time_ desc");
         return result(modelService.selectActReModelList(actReModel));
@@ -130,11 +121,9 @@ public class ModelerController extends BaseController
 
     @PostMapping("remove")
     @ResponseBody
-    public R deleteOne(String ids)
-    {
+    public R deleteOne(String ids) {
         String[] idsArr = ids.split(",");
-        for (String id : idsArr)
-        {
+        for (String id : idsArr) {
             repositoryService.deleteModel(id);
         }
         return R.ok();

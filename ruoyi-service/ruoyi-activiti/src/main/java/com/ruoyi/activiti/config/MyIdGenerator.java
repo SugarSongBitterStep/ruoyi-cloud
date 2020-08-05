@@ -10,11 +10,9 @@ import java.util.UUID;
  * @Date: 2019/3/11 16:05
  */
 @Component
-public class MyIdGenerator implements IdGenerator
-{
+public class MyIdGenerator implements IdGenerator {
     @Override
-    public String getNextId()
-    {
+    public String getNextId() {
         String uuid = UUID.randomUUID().toString().replaceAll("-", "");
         return uuid;
     }

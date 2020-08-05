@@ -9,48 +9,47 @@ import org.activiti.engine.runtime.ProcessInstance;
  * <p>Description:</p>
  * <p>Copyright: Copyright (c) 2020 2020年1月6日 下午1:29:16</p>
  * <p>Company: zmrit.com </p>
+ *
  * @author zmr
  * @version 1.0
  */
 @Data
-public class ProcessInsVo
-{
-    private String  id;
+public class ProcessInsVo {
+    private final String id;
 
-    private String  name;
+    private final String name;
 
-    private String  key;
+    private final String key;
 
-    private Integer version;
+    private final Integer version;
 
-    private String  description;
+    private final String description;
 
-    private String  businessKey;
+    private final String businessKey;
 
-    private String  tableId;
+    private String tableId;
 
-    private String  parentId;
+    private final String parentId;
 
-    private String  procDefId;
+    private final String procDefId;
 
-    private String  procInstId;
+    private final String procInstId;
 
-    private String  actId;
+    private final String actId;
 
-    private Boolean isSuspended;
+    private final Boolean isSuspended;
 
-    private String  tenantId;
+    private final String tenantId;
 
-    private String  deployId;
+    private final String deployId;
 
-    private String  currTaskName;
+    private String currTaskName;
 
-    private String  routeName;
+    private String routeName;
 
-    private String  applyer;
+    private String applyer;
 
-    public ProcessInsVo(ProcessInstance pi)
-    {
+    public ProcessInsVo(ProcessInstance pi) {
         this.id = pi.getId();
         this.name = pi.getName();
         this.key = pi.getProcessDefinitionKey();

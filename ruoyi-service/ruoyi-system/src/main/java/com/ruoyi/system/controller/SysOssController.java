@@ -1,18 +1,5 @@
 package com.ruoyi.system.controller;
 
-import java.io.IOException;
-import java.util.Date;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 import com.ruoyi.common.auth.annotation.HasPermissions;
@@ -31,32 +18,36 @@ import com.ruoyi.system.oss.valdator.QcloudGroup;
 import com.ruoyi.system.oss.valdator.QiniuGroup;
 import com.ruoyi.system.service.ISysConfigService;
 import com.ruoyi.system.service.ISysOssService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.Date;
 
 /**
  * 文件上传 提供者
- * 
+ *
  * @author zmr
  * @date 2019-05-16
  */
 @RestController
 @RequestMapping("oss")
-public class SysOssController extends BaseController
-{
+public class SysOssController extends BaseController {
     private final static String KEY = CloudConstant.CLOUD_STORAGE_CONFIG_KEY;
 
     @Autowired
-    private ISysOssService      sysOssService;
+    private ISysOssService sysOssService;
 
     @Autowired
-    private ISysConfigService   sysConfigService;
+    private ISysConfigService sysConfigService;
 
     /**
      * 云存储配置信息
      */
     @RequestMapping("config")
     @HasPermissions("sys:oss:config")
-    public CloudStorageConfig config()
-    {
+    public CloudStorageConfig config() {
         String jsonconfig = sysConfigService.selectConfigByKey(CloudConstant.CLOUD_STORAGE_CONFIG_KEY);
         // 获取云存储配置信息
         CloudStorageConfig config = JSON.parseObject(jsonconfig, CloudStorageConfig.class);
@@ -68,22 +59,16 @@ public class SysOssController extends BaseController
      */
     @RequestMapping("saveConfig")
     @HasPermissions("sys:oss:config")
-    public R saveConfig(CloudStorageConfig config)
-    {
+    public R saveConfig(CloudStorageConfig config) {
         // 校验类型
         ValidatorUtils.validateEntity(config);
-        if (config.getType() == CloudService.QINIU.getValue())
-        {
+        if (config.getType() == CloudService.QINIU.getValue()) {
             // 校验七牛数据
             ValidatorUtils.validateEntity(config, QiniuGroup.class);
-        }
-        else if (config.getType() == CloudService.ALIYUN.getValue())
-        {
+        } else if (config.getType() == CloudService.ALIYUN.getValue()) {
             // 校验阿里云数据
             ValidatorUtils.validateEntity(config, AliyunGroup.class);
-        }
-        else if (config.getType() == CloudService.QCLOUD.getValue())
-        {
+        } else if (config.getType() == CloudService.QCLOUD.getValue()) {
             // 校验腾讯云数据
             ValidatorUtils.validateEntity(config, QcloudGroup.class);
         }
@@ -94,8 +79,7 @@ public class SysOssController extends BaseController
      * 查询文件上传
      */
     @GetMapping("get/{id}")
-    public SysOss get(@PathVariable("id") Long id)
-    {
+    public SysOss get(@PathVariable("id") Long id) {
         return sysOssService.selectSysOssById(id);
     }
 
@@ -103,8 +87,7 @@ public class SysOssController extends BaseController
      * 查询文件上传列表
      */
     @GetMapping("list")
-    public R list(SysOss sysOss)
-    {
+    public R list(SysOss sysOss) {
         startPage();
         return result(sysOssService.selectSysOssList(sysOss));
     }
@@ -114,21 +97,19 @@ public class SysOssController extends BaseController
      */
     @PostMapping("update")
     @HasPermissions("sys:oss:edit")
-    public R editSave(@RequestBody SysOss sysOss)
-    {
+    public R editSave(@RequestBody SysOss sysOss) {
         return toAjax(sysOssService.updateSysOss(sysOss));
     }
 
     /**
      * 修改保存文件上传
-     * @throws IOException 
+     *
+     * @throws IOException
      */
     @PostMapping("upload")
     @HasPermissions("sys:oss:add")
-    public R editSave(@RequestParam("file") MultipartFile file) throws IOException
-    {
-        if (file.isEmpty())
-        {
+    public R editSave(@RequestParam("file") MultipartFile file) throws IOException {
+        if (file.isEmpty()) {
             throw new OssException("上传文件不能为空");
         }
         // 上传文件
@@ -152,8 +133,7 @@ public class SysOssController extends BaseController
      */
     @PostMapping("remove")
     @HasPermissions("sys:oss:remove")
-    public R remove(String ids)
-    {
+    public R remove(String ids) {
         return toAjax(sysOssService.deleteSysOssByIds(ids));
     }
 }

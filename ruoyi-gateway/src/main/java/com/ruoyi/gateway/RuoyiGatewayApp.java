@@ -7,10 +7,8 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @EnableDiscoveryClient
 @SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
-public class RuoyiGatewayApp
-{
-    public static void main(String[] args)
-    {
+public class RuoyiGatewayApp {
+    public static void main(String[] args) {
         SpringApplication.run(RuoyiGatewayApp.class, args);
     }
 }

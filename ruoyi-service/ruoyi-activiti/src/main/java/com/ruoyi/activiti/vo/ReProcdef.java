@@ -1,46 +1,43 @@
 package com.ruoyi.activiti.vo;
 
-import org.activiti.engine.repository.ProcessDefinition;
-
 import lombok.Data;
 import lombok.experimental.Accessors;
+import org.activiti.engine.repository.ProcessDefinition;
 
 @Data
 @Accessors(chain = true)
-public class ReProcdef
-{
-    private String  id;
+public class ReProcdef {
+    private String id;
 
     private Integer rev;
 
-    private String  category;
+    private String category;
 
-    private String  name;
+    private String name;
 
-    private String  key;
+    private String key;
 
     private Integer version;
 
-    private String  deploymentId;
+    private String deploymentId;
 
-    private String  resourceName;
+    private String resourceName;
 
-    private String  dgrmResourceName;
+    private String dgrmResourceName;
 
-    private String  description;
+    private String description;
 
-    private Byte    hasStartFormKey;
+    private Byte hasStartFormKey;
 
-    private Byte    hasGraphicalNotation;
+    private Byte hasGraphicalNotation;
 
     private Integer suspensionState;
 
-    private String  tenantId;
+    private String tenantId;
 
-    private String  engineVersion;
+    private String engineVersion;
 
-    public ReProcdef(ProcessDefinition processDefinition)
-    {
+    public ReProcdef(ProcessDefinition processDefinition) {
         setId(processDefinition.getId());
         setCategory(processDefinition.getCategory());
         setName(processDefinition.getName());
@@ -53,9 +50,8 @@ public class ReProcdef
     }
 
     public ReProcdef(String id, Integer rev, String category, String name, String key, Integer version,
-            String deploymentId, String resourceName, String dgrmResourceName, String description, Byte hasStartFormKey,
-            Byte hasGraphicalNotation, Integer suspensionState, String tenantId, String engineVersion)
-    {
+                     String deploymentId, String resourceName, String dgrmResourceName, String description, Byte hasStartFormKey,
+                     Byte hasGraphicalNotation, Integer suspensionState, String tenantId, String engineVersion) {
         this.id = id;
         this.rev = rev;
         this.category = category;

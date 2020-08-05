@@ -15,17 +15,15 @@
  */
 package com.ruoyi.gateway.config;
 
+import com.ruoyi.gateway.handler.HystrixFallbackHandler;
+import com.ruoyi.gateway.handler.ImgCodeHandler;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.server.RequestPredicates;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
-
-import com.ruoyi.gateway.handler.HystrixFallbackHandler;
-import com.ruoyi.gateway.handler.ImgCodeHandler;
-
-import lombok.AllArgsConstructor;
 
 /**
  * @author lengleng
@@ -34,15 +32,13 @@ import lombok.AllArgsConstructor;
  */
 @Configuration
 @AllArgsConstructor
-public class RouterFunctionConfiguration
-{
+public class RouterFunctionConfiguration {
     private final HystrixFallbackHandler hystrixFallbackHandler;
 
-    private final ImgCodeHandler         imgCodeHandler;
+    private final ImgCodeHandler imgCodeHandler;
 
     @Bean
-    public RouterFunction<?> routerFunction()
-    {
+    public RouterFunction<?> routerFunction() {
         return RouterFunctions
                 .route(RequestPredicates.path("/fallback").and(RequestPredicates.accept(MediaType.TEXT_PLAIN)),
                         hystrixFallbackHandler)

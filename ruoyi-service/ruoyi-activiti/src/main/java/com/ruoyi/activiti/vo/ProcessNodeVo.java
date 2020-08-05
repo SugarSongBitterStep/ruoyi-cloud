@@ -1,12 +1,11 @@
 package com.ruoyi.activiti.vo;
 
-import java.util.List;
-
 import lombok.Data;
 
+import java.util.List;
+
 @Data
-public class ProcessNodeVo
-{
+public class ProcessNodeVo {
     // 节点id
     private String nodeId;
 
@@ -26,5 +25,5 @@ public class ProcessNodeVo
     private List<Long> deptIds;
 
     // 选操作人的部门负责人
-    private Boolean deptHeader = false;
+    private final Boolean deptHeader = false;
 }

@@ -6,39 +6,38 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class HiProcInsVo
-{
-    private String  id;
+public class HiProcInsVo {
+    private String id;
 
-    private String  procDefId;
+    private String procDefId;
 
-    private String  procDefKey;
+    private String procDefKey;
 
-    private String  procInstId;
-
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date    startTime;
+    private String procInstId;
 
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date    endTime;
+    private Date startTime;
 
-    private Long    duration;
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date endTime;
 
-    private String  deleteReason;
+    private Long duration;
 
-    private String  procName;
+    private String deleteReason;
 
-    private String  businessKey;
+    private String procName;
 
-    private String  tableId;
+    private String businessKey;
 
-    private String  title;
+    private String tableId;
 
-    private String  applyer;
+    private String title;
+
+    private String applyer;
 
     private Integer result;
 
     private Integer status;
 
-    private Long    userId;
+    private Long userId;
 }

@@ -1,40 +1,39 @@
 package com.ruoyi.system.config;
 
+import com.alibaba.druid.pool.DruidDataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import com.alibaba.druid.pool.DruidDataSource;
 
 /**
  * druid 配置属性
- * 
+ *
  * @author ruoyi
  */
 @Configuration
-public class DruidProperties
-{
+public class DruidProperties {
     @Value("${spring.datasource.druid.initialSize}")
-    private int     initialSize;
+    private int initialSize;
 
     @Value("${spring.datasource.druid.minIdle}")
-    private int     minIdle;
+    private int minIdle;
 
     @Value("${spring.datasource.druid.maxActive}")
-    private int     maxActive;
+    private int maxActive;
 
     @Value("${spring.datasource.druid.maxWait}")
-    private int     maxWait;
+    private int maxWait;
 
     @Value("${spring.datasource.druid.timeBetweenEvictionRunsMillis}")
-    private int     timeBetweenEvictionRunsMillis;
+    private int timeBetweenEvictionRunsMillis;
 
     @Value("${spring.datasource.druid.minEvictableIdleTimeMillis}")
-    private int     minEvictableIdleTimeMillis;
+    private int minEvictableIdleTimeMillis;
 
     @Value("${spring.datasource.druid.maxEvictableIdleTimeMillis}")
-    private int     maxEvictableIdleTimeMillis;
+    private int maxEvictableIdleTimeMillis;
 
     @Value("${spring.datasource.druid.validationQuery}")
-    private String  validationQuery;
+    private String validationQuery;
 
     @Value("${spring.datasource.druid.testWhileIdle}")
     private boolean testWhileIdle;
@@ -48,8 +47,7 @@ public class DruidProperties
     @Value("${spring.datasource.druid.slave.enabled}")
     public Boolean slaveEnable;
 
-    public DruidDataSource dataSource(DruidDataSource datasource)
-    {
+    public DruidDataSource dataSource(DruidDataSource datasource) {
         /** 配置初始化大小、最小、最大 */
         datasource.setInitialSize(initialSize);
         datasource.setMaxActive(maxActive);

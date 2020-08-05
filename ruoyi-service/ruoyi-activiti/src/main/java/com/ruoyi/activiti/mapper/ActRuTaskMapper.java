@@ -1,11 +1,10 @@
 package com.ruoyi.activiti.mapper;
 
-import java.util.List;
-
 import com.ruoyi.activiti.domain.ActRuTask;
 
-public interface ActRuTaskMapper
-{
+import java.util.List;
+
+public interface ActRuTaskMapper {
     int deleteByPrimaryKey(String id);
 
     int insert(ActRuTask record);

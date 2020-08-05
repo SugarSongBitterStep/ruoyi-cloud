@@ -1,16 +1,5 @@
 package com.ruoyi.activiti.controller;
 
-import java.util.Date;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.google.common.collect.Maps;
 import com.ruoyi.activiti.consts.ActivitiConstant;
 import com.ruoyi.activiti.domain.BizBusiness;
@@ -21,17 +10,21 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.R;
 import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.feign.RemoteUserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
+import java.util.Map;
 
 /**
  * 报销 提供者
- * 
+ *
  * @author ruoyi
  * @date 2020-01-07
  */
 @RestController
 @RequestMapping("purchase")
-public class BizPurchaseController extends BaseController
-{
+public class BizPurchaseController extends BaseController {
     @Autowired
     private IBizPurchaseService purchaseService;
 
@@ -39,30 +32,27 @@ public class BizPurchaseController extends BaseController
     private IBizBusinessService bizBusinessService;
 
     @Autowired
-    private RemoteUserService   remoteUserService;
+    private RemoteUserService remoteUserService;
 
     /**
      * 查询报销
      */
     @GetMapping("get/{id}")
-    public R get(@PathVariable("id") String id)
-    {
+    public R get(@PathVariable("id") String id) {
         return R.data(purchaseService.selectBizPurchaseById(id));
     }
 
     /**
      * 根据业务key获取数据
-     * 
+     *
      * @param businessKey
      * @return
      * @author zmr
      */
     @GetMapping("biz/{businessKey}")
-    public R biz(@PathVariable("businessKey") String businessKey)
-    {
+    public R biz(@PathVariable("businessKey") String businessKey) {
         BizBusiness business = bizBusinessService.selectBizBusinessById(businessKey);
-        if (null != business)
-        {
+        if (null != business) {
             BizPurchase purchase = purchaseService.selectBizPurchaseById(business.getTableId());
             return R.data(purchase);
         }
@@ -73,11 +63,9 @@ public class BizPurchaseController extends BaseController
      * 新增保存报销
      */
     @PostMapping("save")
-    public R addSave(@RequestBody BizPurchase purchase)
-    {
+    public R addSave(@RequestBody BizPurchase purchase) {
         int index = purchaseService.insertBizPurchase(purchase);
-        if (index == 1)
-        {
+        if (index == 1) {
             BizBusiness business = initBusiness(purchase);
             bizBusinessService.insertBizBusiness(business);
             Map<String, Object> variables = Maps.newHashMap();
@@ -93,12 +81,12 @@ public class BizPurchaseController extends BaseController
 
     /**
      * biz构造业务信息
+     *
      * @param purchase
      * @return
      * @author zmr
      */
-    private BizBusiness initBusiness(BizPurchase purchase)
-    {
+    private BizBusiness initBusiness(BizPurchase purchase) {
         BizBusiness business = new BizBusiness();
         business.setTableId(purchase.getId().toString());
         business.setProcDefId(purchase.getProcDefId());
