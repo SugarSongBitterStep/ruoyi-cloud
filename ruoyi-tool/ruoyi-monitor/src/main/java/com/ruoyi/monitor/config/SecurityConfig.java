@@ -21,9 +21,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         SavedRequestAwareAuthenticationSuccessHandler successHandler = new SavedRequestAwareAuthenticationSuccessHandler();
         successHandler.setTargetUrlParameter("redirectTo");
         successHandler.setDefaultTargetUrl(adminContextPath + "/");
-        http.authorizeRequests().antMatchers(adminContextPath + "/assets/**", adminContextPath + "/login").permitAll()
+        http.authorizeRequests()
+                .antMatchers(adminContextPath + "/assets/**", adminContextPath + "/login").permitAll()
                 .anyRequest().authenticated().and().formLogin().loginPage(adminContextPath + "/login")
-                .successHandler(successHandler).and().logout().logoutUrl(adminContextPath + "/logout").and().httpBasic()
+                .successHandler(successHandler).and().logout().logoutUrl(adminContextPath + "/logout")
+                .and().httpBasic()
                 .and().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 .ignoringAntMatchers("/instances", "/actuator/**", adminContextPath + "/logout");
     }
