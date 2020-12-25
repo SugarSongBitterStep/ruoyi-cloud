@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
  * @author ruoyi
  */
 public class BeanUtils extends org.springframework.beans.BeanUtils {
+
     /**
      * Bean方法名中属性名开始的下标
      */

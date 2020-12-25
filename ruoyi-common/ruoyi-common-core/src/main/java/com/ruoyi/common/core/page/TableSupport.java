@@ -9,6 +9,7 @@ import com.ruoyi.common.utils.ServletUtils;
  * @author ruoyi
  */
 public class TableSupport {
+
     /**
      * 封装分页对象
      */

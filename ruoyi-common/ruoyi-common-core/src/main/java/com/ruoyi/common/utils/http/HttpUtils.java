@@ -18,6 +18,7 @@ import java.security.cert.X509Certificate;
  * @author ruoyi
  */
 public class HttpUtils {
+
     private static final Logger log = LoggerFactory.getLogger(HttpUtils.class);
 
     /**
@@ -142,7 +143,7 @@ public class HttpUtils {
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             String ret = "";
             while ((ret = br.readLine()) != null) {
-                if (ret != null && !ret.trim().equals("")) {
+                if (!"".equals(ret.trim())) {
                     result.append(new String(ret.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8));
                 }
             }

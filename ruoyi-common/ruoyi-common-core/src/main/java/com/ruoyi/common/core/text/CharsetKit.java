@@ -11,6 +11,7 @@ import java.nio.charset.StandardCharsets;
  * @author ruoyi
  */
 public class CharsetKit {
+
     /**
      * ISO-8859-1
      */

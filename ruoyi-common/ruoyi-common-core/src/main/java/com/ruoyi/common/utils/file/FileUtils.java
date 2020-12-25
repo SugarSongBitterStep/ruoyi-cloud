@@ -1,7 +1,13 @@
 package com.ruoyi.common.utils.file;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 /**
@@ -10,14 +16,14 @@ import java.net.URLEncoder;
  * @author ruoyi
  */
 public class FileUtils {
-    public static String FILENAME_PATTERN = "[a-zA-Z0-9_\\-\\|\\.\\u4e00-\\u9fa5]+";
+
+    public static String FILENAME_PATTERN = "[a-zA-Z0-9_\\-|.\\u4e00-\\u9fa5]+";
 
     /**
      * 输出指定文件的byte数组
      *
      * @param filePath 文件路径
      * @param os       输出流
-     * @return
      */
     public static void writeBytes(String filePath, OutputStream os) throws IOException {
         FileInputStream fis = null;
@@ -32,8 +38,6 @@ public class FileUtils {
             while ((length = fis.read(b)) > 0) {
                 os.write(b, 0, length);
             }
-        } catch (IOException e) {
-            throw e;
         } finally {
             if (os != null) {
                 try {
@@ -56,7 +60,6 @@ public class FileUtils {
      * 删除文件
      *
      * @param filePath 文件
-     * @return
      */
     public static boolean deleteFile(String filePath) {
         boolean flag = false;
@@ -76,7 +79,7 @@ public class FileUtils {
      * @return true 正常 false 非法
      */
     public static boolean isValidFilename(String filename) {
-        return filename.matches(FILENAME_PATTERN);
+        return !filename.matches(FILENAME_PATTERN);
     }
 
     /**
@@ -109,8 +112,6 @@ public class FileUtils {
 
     /**
      * 获取系统临时目录
-     *
-     * @return
      */
     public static String getTemp() {
         return System.getProperty("java.io.tmpdir");
@@ -118,10 +119,6 @@ public class FileUtils {
 
     /**
      * 创建临时文件
-     *
-     * @param filePath
-     * @param data
-     * @return
      */
     public static File createTempFile(String filePath, byte[] data) throws IOException {
         String temp = getTemp() + filePath;

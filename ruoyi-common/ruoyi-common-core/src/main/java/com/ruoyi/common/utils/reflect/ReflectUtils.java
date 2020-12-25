@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.*;
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -16,8 +17,8 @@ import java.util.Date;
  *
  * @author ruoyi
  */
-@SuppressWarnings("rawtypes")
 public class ReflectUtils {
+
     private static final String SETTER_PREFIX = "set";
 
     private static final String GETTER_PREFIX = "get";
@@ -113,7 +114,7 @@ public class ReflectUtils {
         try {
             return (E) method.invoke(obj, args);
         } catch (Exception e) {
-            String msg = "method: " + method + ", obj: " + obj + ", args: " + args + "";
+            String msg = "method: " + method + ", obj: " + obj + ", args: " + Arrays.toString(args) + "";
             throw convertReflectionExceptionToUnchecked(msg, e);
         }
     }
@@ -123,13 +124,12 @@ public class ReflectUtils {
      * 用于一次性调用的情况，否则应使用getAccessibleMethodByName()函数获得Method后反复调用.
      * 只匹配函数名，如果有多个同名函数调用第一个。
      */
-    @SuppressWarnings("unchecked")
-    public static <E> E invokeMethodByName(final Object obj, final String methodName, final Object[] args) {
+    public static <E> void invokeMethodByName(final Object obj, final String methodName, final Object[] args) {
         Method method = getAccessibleMethodByName(obj, methodName, args.length);
         if (method == null) {
             // 如果为空不报错，直接返回空。
             logger.debug("在 [" + obj.getClass() + "] 中，没有找到 [" + methodName + "] 方法 ");
-            return null;
+            return;
         }
         try {
             // 类型转换（将参数数据类型转换为目标方法参数类型）
@@ -158,9 +158,9 @@ public class ReflectUtils {
                     }
                 }
             }
-            return (E) method.invoke(obj, args);
+            method.invoke(obj, args);
         } catch (Exception e) {
-            String msg = "method: " + method + ", obj: " + obj + ", args: " + args + "";
+            String msg = "method: " + method + ", obj: " + obj + ", args: " + Arrays.toString(args) + "";
             throw convertReflectionExceptionToUnchecked(msg, e);
         }
     }
@@ -180,8 +180,7 @@ public class ReflectUtils {
                 Field field = superClass.getDeclaredField(fieldName);
                 makeAccessible(field);
                 return field;
-            } catch (NoSuchFieldException e) {
-                continue;
+            } catch (NoSuchFieldException ignored) {
             }
         }
         return null;
@@ -205,8 +204,7 @@ public class ReflectUtils {
                 Method method = searchType.getDeclaredMethod(methodName, parameterTypes);
                 makeAccessible(method);
                 return method;
-            } catch (NoSuchMethodException e) {
-                continue;
+            } catch (NoSuchMethodException ignored) {
             }
         }
         return null;
@@ -261,7 +259,7 @@ public class ReflectUtils {
      * 如无法找到, 返回Object.class.
      */
     @SuppressWarnings("unchecked")
-    public static <T> Class<T> getClassGenricType(final Class clazz) {
+    public static <T> Class<T> getClassGenricType(final Class<?> clazz) {
         return getClassGenricType(clazz, 0);
     }
 
@@ -269,7 +267,7 @@ public class ReflectUtils {
      * 通过反射, 获得Class定义中声明的父类的泛型参数的类型.
      * 如无法找到, 返回Object.class.
      */
-    public static Class getClassGenricType(final Class clazz, final int index) {
+    public static Class getClassGenricType(final Class<?> clazz, final int index) {
         Type genType = clazz.getGenericSuperclass();
 
         if (!(genType instanceof ParameterizedType)) {

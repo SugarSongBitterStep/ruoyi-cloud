@@ -31,6 +31,7 @@ import java.util.Map;
  * @author ruoyi
  */
 public class BaseController {
+
     protected final Logger logger = LoggerFactory.getLogger(BaseController.class);
 
     /**
@@ -84,9 +85,9 @@ public class BaseController {
     public long getCurrentUserId() {
         String currentId = getRequest().getHeader(Constants.CURRENT_ID);
         if (StringUtils.isNotBlank(currentId)) {
-            return Long.valueOf(currentId);
+            return Long.parseLong(currentId);
         }
-        return 0l;
+        return 0L;
     }
 
     public String getLoginName() {
@@ -108,7 +109,7 @@ public class BaseController {
     @SuppressWarnings({"rawtypes", "unchecked"})
     protected R result(List<?> list) {
         PageInfo<?> pageInfo = new PageInfo(list);
-        Map<String, Object> m = new HashMap<String, Object>();
+        Map<String, Object> m = new HashMap<>(8);
         m.put("rows", list);
         m.put("pageNum", pageInfo.getPageNum());
         m.put("total", pageInfo.getTotal());

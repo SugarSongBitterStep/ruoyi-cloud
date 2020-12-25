@@ -16,7 +16,8 @@ import java.util.Map;
  * @author yml
  */
 public class YamlUtil {
-    public static Map<?, ?> loadYaml(String fileName) throws FileNotFoundException {
+
+    public static Map<?, ?> loadYaml(String fileName) {
         InputStream in = YamlUtil.class.getClassLoader().getResourceAsStream(fileName);
         return StringUtils.isNotEmpty(fileName) ? (LinkedHashMap<?, ?>) new Yaml().load(in) : null;
     }
@@ -40,10 +41,8 @@ public class YamlUtil {
                     String left = input.substring(0, index);
                     String right = input.substring(index + 1);
                     return getProperty((Map<?, ?>) map.get(left), right);
-                } else if (map.containsKey(input)) {
-                    return map.get(input);
                 } else {
-                    return null;
+                    return map.getOrDefault(input, null);
                 }
             }
         }
@@ -54,7 +53,7 @@ public class YamlUtil {
     public static void setProperty(Map<?, ?> map, Object qualifiedKey, Object value) {
         if (map != null && !map.isEmpty() && qualifiedKey != null) {
             String input = String.valueOf(qualifiedKey);
-            if (!input.equals("")) {
+            if (!"".equals(input)) {
                 if (input.contains(".")) {
                     int index = input.indexOf(".");
                     String left = input.substring(0, index);

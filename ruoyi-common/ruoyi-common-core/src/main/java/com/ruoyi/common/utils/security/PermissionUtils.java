@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
  * @author ruoyi
  */
 public class PermissionUtils {
+
     /**
      * 查看数据的权限
      */
